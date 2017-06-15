@@ -1,40 +1,46 @@
 'use strict';
+require('./bootstrap');
 
-require('./bootstrap'); e
-
+const Inert = require('inert');
+const Vision = require('vision');
+const HapiSwagger = require('hapi-swagger');
 const Hapi = require('hapi');
 const server = new Hapi.Server();
 
-
-
 server.connection({
-    host: 'http://video1.livee.com',
-    port: 8086,
-    routes: {
-        cors: {
-            origin: ['*'],
-            credentials: true
-        }
+  host: 'localhost',
+  port: config.api.port,
+  routes: {
+    cors: {
+      origin: ['*'],
+      credentials: true
     }
+  }
 });
-
 
 // Jointure des sources / serveur
 require('./src')(server);
 
-
-
-// Enregistrement du serveur auprès de Swagger
-server.register({
-    register: require('h2o2')
-}, function (err) {
-
-    if (err) {
-        console.log('Failed to load h2o2');
+server.register([
+  { register: require('h2o2') },
+  Inert,
+  Vision, {
+    'register': HapiSwagger,
+    'options': {
+      info: {
+        'title': 'Test API Documentation',
+        'version': '1',
+      }
     }
-
-    server.start(function (err) {
-
-        console.log('Server started at: ' + server.info.uri);
-    });
+  }
+], function(err) {
+  if (err) {
+    console.log('Failed to load h2o2');
+  }
+  server.start(function(err) {
+    if (err) {
+      throw err;
+    }
+    console.log('Server started at: ' + server.info.uri);
+  });
 });
