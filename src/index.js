@@ -1,3 +1,6 @@
 'use strict';
 
-module.exports = require('./api');
+module.exports = (server) => {
+  const services = require('./services')();
+  require('./api')(server, services);
+};

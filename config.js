@@ -8,6 +8,12 @@ module.exports = (logger) => {
     wowza: {
       host: 'localhost',
       port: 8087
+    },
+    vimeo: {
+      token: 'dev'
+    },
+    video: {
+      src: ''
     }
   });
 };

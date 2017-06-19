@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = (server) => {
-  const handlers = require('./handlers')();
+module.exports = (server, services) => {
+  const handlers = require('./handlers')(services);
   require('./routes')(server, handlers);
 };
