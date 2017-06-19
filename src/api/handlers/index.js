@@ -2,6 +2,6 @@
 
 module.exports = () => {
   return {
-    proxy: require('./proxy')()
+    proxy: require('./proxy')(services)
   };
 };
