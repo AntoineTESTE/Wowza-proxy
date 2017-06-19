@@ -21,11 +21,18 @@ module.exports = ({ VimeoService }) => {
         passThrough: true,
         onResponse(err, res, request, reply, settings, ttl) {
           Wreck.read(res, { json: true }, (err, payload) => {
-            const onResponse = (err, body, status, headers) => reply(err || payload);
+            const replyOnce = _.once(reply);
+            const onResponse = (err, body, status, headers) => {
+              if(err) {
+                return replyOnce(err);
+              }
+              logger.info('onResponse from upload:', err, body, headers);
+            };
             const onProgress = (uploaded_size, file_size) => {
+              replyOnce(payload);
               Math.round((uploaded_size / file_size) * 100);
             };
-            upload(`${config.videos.src}/${videoPath}`, onResponse, onProgress);
+            VimeoService.upload(`${config.videos.src}/${videoPath}`, onResponse, onProgress);
           });
         }
       });

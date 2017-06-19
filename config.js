@@ -12,7 +12,7 @@ module.exports = (logger) => {
     vimeo: {
       token: 'dev'
     },
-    video: {
+    videos: {
       src: ''
     }
   });
