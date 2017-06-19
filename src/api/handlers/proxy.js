@@ -29,7 +29,7 @@ module.exports = ({ VimeoService }) => {
               logger.info('onResponse from upload:', err, body, headers);
             };
             const onProgress = (uploaded_size, file_size) => {
-              replyOnce(payload);
+              replyOnce(201);
               Math.round((uploaded_size / file_size) * 100);
             };
             VimeoService.upload(`${config.videos.src}/${videoPath}`, onResponse, onProgress);
