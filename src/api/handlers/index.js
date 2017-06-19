@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = () => {
+module.exports = (services) => {
   return {
     proxy: require('./proxy')(services)
   };
