@@ -5,7 +5,7 @@ module.exports = (server, handlers) => {
   //Add the route to Start record
   server.route({
     method: 'GET',
-    path: '/liveestreamrecord',
+    path: '/livestreamrecord',
     config: {
       description: 'routes for start and stop recording',
       notes: ['api'],
