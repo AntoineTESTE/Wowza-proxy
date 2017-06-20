@@ -14,6 +14,10 @@ module.exports = (logger) => {
     },
     videos: {
       src: ''
-    }
+    },
+    mongodb: {
+      connectionString: 'localhost',
+      port: 27017
+    },
   });
 };
