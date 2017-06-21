@@ -27,11 +27,11 @@ module.exports = ({ VimeoService }, { VideoStats }) => {
 
         // Reponse de Wowza
         onResponse(err, res, request, reply, settings, ttl) {
-          if(err) {
+          if (err) {
             return reply(err);
           }
           Wreck.read(res, { json: true }, (err, payload) => { // Tamponne la reponse en JSON
-            if(err) {
+            if (err) {
               return reply(err);
             }
             const replyOnce = _.once(reply); // Répond qu'une seule fois
@@ -43,7 +43,7 @@ module.exports = ({ VimeoService }, { VideoStats }) => {
               uploadDuration: null,
               status: 'WAITING',
             }, (err, videoStats) => { // callback (erreur ou instance : videoStats)
-              if(err) {
+              if (err) {
                 return replyOnce(err);
               }
               // Lancement de l'upload
