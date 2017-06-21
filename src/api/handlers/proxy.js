@@ -27,7 +27,13 @@ module.exports = ({ VimeoService }, { VideoStats }) => {
 
         // Reponse de Wowza
         onResponse(err, res, request, reply, settings, ttl) {
+          if(err) {
+            return reply(err);
+          }
           Wreck.read(res, { json: true }, (err, payload) => { // Tamponne la reponse en JSON
+            if(err) {
+              return reply(err);
+            }
             const replyOnce = _.once(reply); // Répond qu'une seule fois
 
             // Creation de la stat
@@ -37,6 +43,9 @@ module.exports = ({ VimeoService }, { VideoStats }) => {
               uploadDuration: null,
               status: 'WAITING',
             }, (err, videoStats) => { // callback (erreur ou instance : videoStats)
+              if(err) {
+                return replyOnce(err);
+              }
               // Lancement de l'upload
               VimeoService.upload(`${config.videos.src}/${videoPath}`,
                 // callback de l'upload (le cas ou c'est fini)
@@ -47,7 +56,7 @@ module.exports = ({ VimeoService }, { VideoStats }) => {
                   }
                   // OK
                   videoStats.status = 'UPLOADED'; // status "fin d'upload"
-                  videoStats.uploadDuration = _.now() - videoStats.uploadedAt; // calcul durée d'upload 
+                  videoStats.uploadDuration = _.now() - videoStats.uploadedAt; // calcul durée d'upload
                   videoStats.save((err, updatedVideoStats) => { // enregistrement dans la collection VideoStats
                     logger.info('onResponse from upload:', err, body, headers);
                   });

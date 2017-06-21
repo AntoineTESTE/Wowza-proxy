@@ -16,8 +16,7 @@ module.exports = (logger) => {
       src: ''
     },
     mongodb: {
-      connectionString: 'localhost',
-      port: 27017
+      connectionString: 'localhost'
     },
   });
 };
