@@ -7,7 +7,7 @@ module.exports = () => {
     upload(filePath, onResponse, onProgress) {
       onProgress(0, 0);
       setTimeout(() => {
-        onResponse(null, {}, {}, {});
+        onResponse(null, {}, {}, { location: '/videos/219717161' });
       }, 10000);
 
       // lib.streamingUpload(filePath, onResponse, onProgress);
