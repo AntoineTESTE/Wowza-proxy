@@ -42,6 +42,7 @@ module.exports = ({ VimeoService }, { VideoStats }) => {
               uploadedAt: _.now(),
               uploadDuration: null,
               status: 'WAITING',
+              url: ''
             }, (err, videoStats) => { // callback (erreur ou instance : videoStats)
               if (err) {
                 return replyOnce(err);
@@ -57,6 +58,7 @@ module.exports = ({ VimeoService }, { VideoStats }) => {
                   // OK
                   videoStats.status = 'UPLOADED'; // status "fin d'upload"
                   videoStats.uploadDuration = _.now() - videoStats.uploadedAt; // calcul durée d'upload
+                  videoStats.url = headers.location; // url de la video
                   videoStats.save((err, updatedVideoStats) => { // enregistrement dans la collection VideoStats
                     logger.info('onResponse from upload:', err, body, headers);
                   });

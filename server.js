@@ -21,6 +21,7 @@ server.connection({
 // Jointure des sources / serveur
 require('./src')(server);
 
+// proxy server
 server.register([
   { register: require('h2o2') },
   Inert,
@@ -33,11 +34,11 @@ server.register([
       }
     }
   }
-], function(err) {
+], function (err) {
   if (err) {
     console.log('Failed to load h2o2');
   }
-  server.start(function(err) {
+  server.start(function (err) {
     if (err) {
       throw err;
     }

@@ -8,7 +8,7 @@ module.exports = () => {
       onProgress(0, 0);
       setTimeout(() => {
         onResponse(null, {}, {}, {});
-      }, 1000);
+      }, 10000);
 
       // lib.streamingUpload(filePath, onResponse, onProgress);
     }

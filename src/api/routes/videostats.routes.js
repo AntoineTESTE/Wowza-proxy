@@ -7,7 +7,7 @@ module.exports = (server, handlers) => {
     method: 'GET',
     path: '/videos/stats',
     config: {
-      description: 'routes for start and stop recording',
+      description: 'routes to get all videos stats',
       notes: ['api'],
       tags: ['api'],
       handler: handlers.videos.getStats,
