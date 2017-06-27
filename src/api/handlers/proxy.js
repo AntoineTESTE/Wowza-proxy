@@ -5,9 +5,10 @@ const { host, port } = config.wowza;
 
 module.exports = (server, { VimeoService }, { VideoStats }) => {
 
+  // Souscription à la route progress
   server.subscription('/videos/progress');
   const sendToFront = (progress) => {
-    if(progress > 100) return;
+    if (progress > 100) return;
     setTimeout(() => {
       console.log('sending...')
       server.publish('/videos/progress', { _id: '594a2cd1af55590e8b11eae8', progress: progress + 3 });
@@ -16,10 +17,16 @@ module.exports = (server, { VimeoService }, { VideoStats }) => {
   };
   sendToFront(0);
 
+
+
+  // Souscription à la route Response
   server.subscription('/videos/response');
-  setTimeout(() => {
-    server.publish('/videos/reponse', { _id: '594a2cd1af55590e8b11eae8', err: null });
-  }, 15000);
+  const EndUpload = (progress) => {
+    if (progress === 100) return videoStats.status = 'UPLOADED';
+    server.publish('/videos/response', { _id: '594a2cd1af55590e8b11eae8', })
+  }
+  EndUpload();
+
 
 
   // Objet d'actions
@@ -55,40 +62,43 @@ module.exports = (server, { VimeoService }, { VideoStats }) => {
 
             // Creation de la stat
             VideoStats.create({
+
               name: videoPath,
               uploadedAt: _.now(),
               uploadDuration: null,
               status: 'WAITING',
               url: ''
-            }, (err, videoStats) => { // callback (erreur ou instance : videoStats)
-              if (err) {
-                return replyOnce(err);
-              }
-              // Lancement de l'upload
-              VimeoService.upload(`${config.videos.src}/${videoPath}`,
-                // callback de l'upload (le cas ou c'est fini)
-                function onResponse(err, body, status, headers) {
-                  if (err) {
-                    // cas d'erreur
-                    return replyOnce(err);
-                  }
-                  // OK
-                  videoStats.status = 'UPLOADED'; // status "fin d'upload"
-                  videoStats.uploadDuration = _.now() - videoStats.uploadedAt; // calcul durée d'upload
-                  videoStats.url = headers.location; // url de la video
-                  videoStats.save((err, updatedVideoStats) => { // enregistrement dans la collection VideoStats
-                    logger.info('onResponse from upload:', err, body, headers);
+            },
+
+              (err, videoStats) => { // callback (erreur ou instance : videoStats)
+                if (err) {
+                  return replyOnce(err);
+                }
+                // Lancement de l'upload
+                VimeoService.upload(`${config.videos.src}/${videoPath}`,
+                  // callback de l'upload (le cas ou c'est fini)
+                  function onResponse(err, body, status, headers) {
+                    if (err) {
+                      // cas d'erreur
+                      return replyOnce(err);
+                    }
+                    // OK
+                    videoStats.status = 'UPLOADED'; // status "fin d'upload"
+                    videoStats.uploadDuration = _.now() - videoStats.uploadedAt; // calcul durée d'upload
+                    videoStats.url = headers.location; // url de la video
+                    videoStats.save((err, updatedVideoStats) => { // enregistrement dans la collection VideoStats
+                      logger.info('onResponse from upload:', err, body, headers);
+                    });
+                  },
+                  // Avancement de l'upload (le cas ou c'est en cours)
+                  function onProgress(uploaded_size, file_size) {
+                    Math.round((uploaded_size / file_size) * 100);
+                    videoStats.status = 'UPLOADING'; // status "en cours"
+                    videoStats.save((err, updatedVideoStats) => {
+                      replyOnce(201);
+                    });
                   });
-                },
-                // Avancement de l'upload (le cas ou c'est en cours)
-                function onProgress(uploaded_size, file_size) {
-                  Math.round((uploaded_size / file_size) * 100);
-                  videoStats.status = 'UPLOADING'; // status "en cours"
-                  videoStats.save((err, updatedVideoStats) => {
-                    replyOnce(201);
-                  });
-                });
-            });
+              });
           });
         }
       });

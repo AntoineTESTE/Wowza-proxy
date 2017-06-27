@@ -1,6 +1,6 @@
 'use strict';
 
-// Export des Routes
+// Export des Routes des stats
 module.exports = (server, handlers) => {
 
   server.route({
