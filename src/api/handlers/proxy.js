@@ -3,7 +3,24 @@
 const Wreck = require('wreck');
 const { host, port } = config.wowza;
 
-module.exports = ({ VimeoService }, { VideoStats }) => {
+module.exports = (server, { VimeoService }, { VideoStats }) => {
+
+  server.subscription('/videos/progress');
+  const sendToFront = (progress) => {
+    if(progress > 100) return;
+    setTimeout(() => {
+      console.log('sending...')
+      server.publish('/videos/progress', { _id: '594a2cd1af55590e8b11eae8', progress: progress + 3 });
+      sendToFront(progress + 3);
+    }, 2000);
+  };
+  sendToFront(0);
+
+  server.subscription('/videos/response');
+  setTimeout(() => {
+    server.publish('/videos/reponse', { _id: '594a2cd1af55590e8b11eae8', err: null });
+  }, 15000);
+
 
   // Objet d'actions
   const actions = {

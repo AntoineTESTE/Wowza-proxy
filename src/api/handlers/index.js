@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = (services, models) => {
+module.exports = (server, services, models) => {
   return {
-    proxy: require('./proxy')(services, models),
+    proxy: require('./proxy')(server, services, models),
     videos: require('./videos')(models)
   };
 };

@@ -6,6 +6,7 @@ const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
 const Hapi = require('hapi');
 const server = new Hapi.Server();
+const Nes = require('nes');
 
 server.connection({
   host: 'localhost',
@@ -18,12 +19,10 @@ server.connection({
   }
 });
 
-// Jointure des sources / serveur
-require('./src')(server);
-
 // proxy server
 server.register([
   { register: require('h2o2') },
+  Nes,
   Inert,
   Vision, {
     'register': HapiSwagger,
@@ -42,6 +41,7 @@ server.register([
     if (err) {
       throw err;
     }
+    require('./src')(server); // Jointure des sources / serveur
     console.log('Server started at: ' + server.info.uri);
   });
 });
