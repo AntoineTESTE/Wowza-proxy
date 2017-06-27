@@ -8,7 +8,8 @@ module.exports = function (mongoose) {
     uploadedAt: Date,
     uploadDuration: Number,
     status: String,
-    url: String
+    url: String,
+    progress: Number
   });
 
   // retour du modèle 'stats' basé sur le schéma

@@ -1,7 +1,9 @@
 'use strict';
 
-module.exports = () => {
+module.exports = (models) => {
+  const VimeoService = require('./VimeoServices')();
   return {
-    VimeoService: require('./vimeoServices')()
+    VideoService: require('./VideoService')(models),
+    VideoUploadService: require('./VideoUploadService')(VimeoService)
   };
 };

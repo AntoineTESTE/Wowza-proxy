@@ -2,7 +2,7 @@
 
 const app = require('express')();
 // Call to livestream service
-app.get('/liveestreamrecord', (req, res) => {
+app.get('/livestreamrecord', (req, res) => {
   res.send('OK');
 });
 // Call localhost
