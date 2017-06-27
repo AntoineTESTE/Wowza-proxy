@@ -1,3 +1,5 @@
+// Gestionnaire de stats (appel au modèle VideoStats)
+
 'use strict';
 
 module.exports = (models) => {

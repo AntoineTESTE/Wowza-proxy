@@ -1,3 +1,5 @@
+// Simulateur de service Vimeo
+
 const access_token = config.vimeo.token;
 const { Vimeo } = require('vimeo');
 const lib = new Vimeo('', '', access_token);

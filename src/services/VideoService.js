@@ -1,7 +1,11 @@
+// VideoService, gestionnaire de Video (en relation avec le modèle VideoStats)
+
 'use strict';
 
 module.exports = ({ VideoStats }) => {
   return {
+
+    // Creation d'une entité vidéo
     createEmpty(path, f) {
       VideoStats.create({
         name: path,
@@ -13,16 +17,19 @@ module.exports = ({ VideoStats }) => {
       }, f);
     },
 
+    // Setting de la video en fin de d'upload
     setUploaded(video, location, f) {
-      video.status = 'UPLOADED'; // status "fin d'upload"
-      video.uploadDuration = _.now() - video.uploadedAt; // calcul durée d'upload
+      video.status = 'UPLOADED';
+      video.uploadDuration = _.now() - video.uploadedAt;
       video.progress = 100;
-      video.url = location; // url de la video
+      video.url = location;
       video.save(f);
     },
 
+
+    // Setting de la video en fin pendant l'upload
     setUploading(video, progress, f) {
-      video.status = 'UPLOADING'; // status "en cours"
+      video.status = 'UPLOADING';
       video.progress = progress;
       video.save(f);
     }

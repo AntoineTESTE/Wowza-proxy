@@ -1,3 +1,5 @@
+// Modèle de schema Mongoose d'une stat
+
 'use strict';
 
 module.exports = function (mongoose) {
