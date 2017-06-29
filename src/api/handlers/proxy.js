@@ -48,10 +48,10 @@ module.exports = (server, { VideoService, VideoUploadService }) => {
               });
             },
               // OnProgress : (1 : appel au service Vimeo pour l'upload)
-              (progress) => {
+              (uploadedSize, fileSize) => {
                 replyOnce();
                 // Setting de la video pendant l'upload
-                VideoService.setUploading(videoStats, progress, (err, updatedVideoStats) => {
+                VideoService.setUploading(videoStats, uploadedSize, fileSize, (err, updatedVideoStats) => {
                   server.publish('/videos/progress', updatedVideoStats);
                 });
               });

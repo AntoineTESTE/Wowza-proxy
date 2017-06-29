@@ -21,16 +21,17 @@ module.exports = ({ VideoStats }) => {
     setUploaded(video, location, f) {
       video.status = 'UPLOADED';
       video.uploadDuration = _.now() - video.uploadedAt;
-      video.progress = 100;
+      video.uploadedSize = video.fileSize;
       video.url = location;
       video.save(f);
     },
 
 
     // Setting de la video en fin pendant l'upload
-    setUploading(video, progress, f) {
+    setUploading(video, uploadedSize, fileSize, f) {
       video.status = 'UPLOADING';
-      video.progress = progress;
+      video.uploadedSize = uploadedSize;
+      video.fileSize = fileSize;
       video.save(f);
     }
   };

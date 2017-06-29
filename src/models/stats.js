@@ -11,7 +11,8 @@ module.exports = function (mongoose) {
     uploadDuration: Number,
     status: String,
     url: String,
-    progress: Number
+    uploadedSize: Number,
+    fileSize: Number
   });
 
   // retour du modèle 'stats' basé sur le schéma

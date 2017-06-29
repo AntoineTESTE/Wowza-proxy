@@ -7,10 +7,11 @@ module.exports = (VimeoService) => {
 
     // Fonction d'upload (défini par Vimeo)
     upload(path, onResponse, onProgress) {
-      let progress = 0;
+      let uploadedSize = 0;
+      let fileSize = 100;
       var interval = setInterval(function () {
-        progress += 5;
-        onProgress(progress);
+        uploadedSize += 5;
+        onProgress(uploadedSize, fileSize);
       }, 1000);
 
       setTimeout(function () {
@@ -23,10 +24,7 @@ module.exports = (VimeoService) => {
       //     return onResponse(err);
       //   }
       //   onResponse(null, headers.location);
-      // }, (uploaded_size, file_size) => {
-      //   const progress = Math.round((uploaded_size / file_size) * 100);
-      //   onProgress(progress);
-      // });
+      // }, onProgress);
     }
   };
 };
