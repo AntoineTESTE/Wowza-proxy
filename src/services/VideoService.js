@@ -12,7 +12,6 @@ module.exports = ({ VideoStats }) => {
         uploadedAt: _.now(),
         uploadDuration: null,
         status: 'WAITING',
-        progress: 0,
         url: ''
       }, f);
     },
