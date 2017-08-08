@@ -1,4 +1,4 @@
-// Simulateur de service Vimeo
+'use strict';
 
 const access_token = config.vimeo.token;
 const { Vimeo } = require('vimeo');
